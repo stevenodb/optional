@@ -2,7 +2,6 @@ package com.cegeka.java.optional;
 
 import com.cegeka.java.optional.person.Person;
 import com.cegeka.java.optional.person.PersonStore;
-import com.cegeka.java.optional.person.exception.OffToReetieException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +12,6 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static java.util.Arrays.asList;
-import static java.util.Optional.ofNullable;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
