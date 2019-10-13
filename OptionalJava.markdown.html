@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Optional in Java</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Fira+Code:400,700);
+
+      body { 
+        font-family: 'Droid Serif';
+      }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: 400;
+        margin-bottom: 0;
+        line-height: 1.5em;
+      }
+
+      .remark-slide-content h1 { font-size: 2.5em; }
+      .remark-slide-content h2 { font-size: 2em; }
+      .remark-slide-content h3 { font-size: 1.5em; }
+      .remark-slide-content { 
+        font-size: 1.5em;
+        line-height: 2em;
+      }
+      .remark-code, .remark-inline-code { 
+        font-family: 'Fira Code';
+        font-size: 0.9em;
+        line-height: 1.5em;
+      }
+
+      p {
+        line-height: 2em;
+      }
+      
+      li { 
+        line-height: 2em; 
+        margin-left: 1em;
+      }
+
+      img { 
+        width: 100%;
+      }
+
+      .compact {
+        font-size: 0.8em;
+        line-height: 1.4em;
+      }
+
+      .less-compact li {
+        line-height: 2em;
+      }
+
+      .compact li {
+        line-height: 1.1em;
+      }
+
+      .blockquote {
+        font-style: italic;
+        font-size: 1.2em;
+        text-align: center;
+
+        line-height: 1.4em;
+        margin-left: 50pt;
+        margin-right: 50pt;
+      }
+
+      .blockquote::before{
+        content: "\201C"; /*Unicode for Left Double Quote*/
+        
+        /*Font*/
+        font-family: Georgia, serif;
+        font-style: normal;
+        font-size: 80px;
+        font-weight: bold;
+        color: #999;
+        
+        /*Positioning*/
+        position: relative;
+        left: -240pt;
+        top: 60pt;
+      }
+
+      .blockquote::after{
+        /*Reset to make sure*/
+        content: "";
+      }
+
+      .author {
+        float: right;
+        margin-right: 50pt;
+      }
+
+      .pull-left {
+        float: left;
+        width: 47%;
+      }
+      .pull-right {
+        float: right;
+        width: 47%;
+      }
+      .pull-right ~ p {
+        clear: both;
+      }
+   
+      .inverse {
+        background: #272822;
+        color: #cacaca;
+        text-shadow: 0 0 20px #333;
+      }
+      .inverse h1, .inverse h2 {
+        color: #f3f3f3;
+        /* line-height: 0.8em; */
+      }
+
+      .some-space {
+        margin-bottom: 3cm;
+      }
+
+      .red { color: #fa0000; }
+
+      .left-column {
+        color: #777;
+        width: 15%;
+        height: 92%;
+        float: left;
+        margin-left: -40pt;
+      }
+        .left-column h2:last-of-type, .left-column h3:last-child {
+          color: #000;
+        }
+      .right-column {
+        width: 80%;
+        float: right;
+        padding-top: 1em;
+      }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+layout: true
+class: center, middle
+---
+
+# Optional`<`Java`>`
+What is it and why is it useful?
+
+---
+layout: true
+class: left, top
+---
+
+## What
+
+> an object that can contain _(a reference)_ to another object
+
+Two states:
+1. Contains a reference
+2. is Empty
+
+> **An Optional can be *null*, but don’t use it that way.**
+```java
+Optional<Person> = null; // 🧨
+```
+
+---
+
+## Why is Optional useful?
+> _Optional is intended for representing “no result” in library method **return types**. Using null instead is likely to cause errors._
+
+🖼
+
+---
+
+## optional.get()
+
+```java
+	return optPerson.get().getName();
+```
+
+> We solved nothing
+
+🖼
+
+---
+
+## optional.is🎁()
+
+---
+
+## optional.isPresent()
+
+---
+
+## optional.isPresent()
+
+```java
+  return optPerson.isPresent() ? person.get().getName()
+                               : “”
+```
+
+> Never use Optional.get() unless you can prove the optional is present.
+> This is also known as the lame way of using an optional.
+
+---
+
+## optional.map(Function`<`T, R`>`)
+  
+> Map in the sense of transform
+
+```java
+	return optPerson.map(p -> p.getName());
+```
+
+🖼
+
+---
+
+## optional.orElse(T)
+
+> a get() method with another flavour
+
+```java
+orElse(..)
+orElseGet(..lambda..) // lazily executed
+orElseThrow(IllegalStateException::new)
+```
+
+Combining map() and orElse()
+
+🖼
+
+---
+class: middle
+
+```java
+return optPerson.map(Person::getName)
+                .orElse(“”)
+```
+---
+
+## optional.filter(Predicate`<`T`>`)
+> Optional has a *filter()* method too
+
+- if absent: returns empty;
+- if present: applies predicate, returning present if true, otherwise empty
+
+---
+class: middle
+
+```java
+return optPerson
+        .map(Person::getName)
+*       .filter(name -> "Wim".equals(name))
+        .orElseThrow(OffToReetieException::new);
+```
+
+---
+
+## optional.ifPresent()
+> Execute some behavior (on the value), when the Optional is present.
+
+🖼
+
+---
+class: middle
+
+```java
+List<Person> found = new ArrayList<>();
+
+Optional<Person> optPerson =
+      personStore.personById(0);
+
+*optPerson.ifPresent(found::add);
+```
+
+---
+
+## Miscellaneous
+
+```java
+
+Optional.empty() // returns empty optional
+
+Optional.of(T) // returns optional containing T,
+               // T must not be null
+
+assertThat(Optional.of(JEF)).contains(JEF) // true
+```
+---
+
+## optional.flatMap(Function`<`T, Optional`<`U`>>`)
+
+🖼
+
+---
+
+## optional.flatMap(Function`<`T, Optional`<`U`>>`)
+
+```java
+optPerson.flatMap(Person::getDateOfBirth)
+         .orElse(EPOCH);
+```
+
+---
+
+## Adapting between Null and Optional
+
+.compact.pull-left[
+### Null `->` Optional:
+```java
+Person p = obj.someMethod();
+*Optional<Person> optPerson = 
+* Optional.ofNullable(p)
+```
+If p is null, returns empty optional,  
+otherwise  Optional`<`Person`>` containing p
+]
+
+.compact.pull-right[
+### Optional `->` Null:
+```java
+Optional<Person> optPerson = 
+  obj.someMethod();
+*optPerson.orElse(null);
+```
+If optPerson is empty, returns null, 
+otherwise the contained object
+
+]
+
+---
+
+## Avoid using Optional in ...
+
+1. fields
+  - use null, or Null Object pattern instead; it's efficient and well understood
+2. method parameters
+  - they are not really optional parameters
+3. collections
+  - code smell
+4. every place you have a `null`
+5. places that need to be _serializable_
+
+---
+
+## Sources
+> Optional - The Mother of All Bikesheds by Stuart Marks 
+> https://www.youtube.com/watch?v=Ej0sss6cq14
+
+> Java SE 8 for the Really Impatient — Cay S. Horstmann
+
+> JavaDoc: Class Optional`<`T`>` 
+> https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html
+
+---
+class: center, middle
+
+# Go and experiment!
+
+</textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js">
+</script>
+<script>
+  var slideshow = remark.create({
+    highlightLanguage: 'java',
+    highlightStyle: 'tomorrow',
+    highlightLines: 'true'
+  });
+</script>
+</body>
+</html>
