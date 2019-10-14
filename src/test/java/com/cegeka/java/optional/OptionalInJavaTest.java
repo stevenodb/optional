@@ -53,10 +53,12 @@ class OptionalInJavaTest {
     @Test
     void personById_filter() {
         Optional<Person> optPerson = personStore.personById(0);
-        optPerson
-            .map(Person::getName)
-            .filter("Wim"::equals)
-            .orElseThrow(OffToRetieException::new);
+        assertThrows(OffToRetieException.class, () -> {
+            optPerson
+                .map(Person::getName)
+                .filter("Wim"::equals)
+                .orElseThrow(OffToRetieException::new);
+        });
     }
 
     @Test
