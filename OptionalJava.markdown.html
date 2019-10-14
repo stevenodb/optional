@@ -27,7 +27,7 @@
       }
       .remark-code, .remark-inline-code { 
         font-family: 'Fira Code';
-        font-size: 0.9em;
+        font-size: 0.85em;
         line-height: 1.5em;
       }
 
@@ -162,9 +162,6 @@ Two states:
 2. is Empty
 
 > **An Optional can be *null*, but don’t use it that way.**
-```java
-Optional<Person> = null; // 🧨
-```
 
 ---
 
@@ -183,7 +180,7 @@ Optional<Person> = null; // 🧨
 
 > We solved nothing
 
-🖼
+- `NullPointerException` `->` `NoSuchElementException`
 
 ---
 
@@ -192,6 +189,8 @@ Optional<Person> = null; // 🧨
 ---
 
 ## optional.isPresent()
+
+🖼
 
 ---
 
@@ -203,7 +202,7 @@ Optional<Person> = null; // 🧨
 ```
 
 > Never use Optional.get() unless you can prove the optional is present.
-> This is also known as the lame way of using an optional.
+> However, this is also known as the lame way of using an optional.
 
 ---
 
@@ -358,12 +357,13 @@ otherwise the contained object
 
 ---
 class: center, middle
+# Go and experiment!
+
+---
+class: center, middle
 ## Review this material
 https://github.com/stevenodb/optional
 .img[![Right-aligned image](qr.png)]
----
-class: center, middle
-# Go and experiment!
 
 </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js">
